@@ -1,6 +1,8 @@
 package com.example.demo.member.controller
 
+import com.example.demo.common.authority.TokenInfo
 import com.example.demo.common.dto.BaseResponse
+import com.example.demo.member.dto.LoginDto
 import com.example.demo.member.dto.MemberDtoRequest
 import com.example.demo.member.service.MemberService
 import jakarta.validation.Valid
@@ -31,5 +33,15 @@ class MemberController(
         // [Note 2.5] '회원가입이 완료되었습니다' 메세지 전달
         val resultMsg: String = memberService.signUp(memberDtoRequest)
         return BaseResponse(message = resultMsg)
+    }
+
+    /**
+     * 로그인
+     */
+    @PostMapping("/login")
+    fun login(@RequestBody @Valid loginDto: LoginDto): BaseResponse<TokenInfo> {
+        val tokenInfo = memberService.login(loginDto)
+        // [Note 4.2] 토큰을 Response에 담아서 리턴
+        return BaseResponse(data = tokenInfo)
     }
 }

@@ -98,3 +98,20 @@ data class MemberDtoRequest(
     fun toEntity(): Member =
             Member(id, loginId, password, name, birthDate, gender, email)
 }
+
+
+// [Note 4.2] 로그인 정보를 받을 DTO
+data class LoginDto(
+        @field:NotBlank
+        @JsonProperty("loginId")
+        private val _loginId: String?,
+
+        @field:NotBlank
+        @JsonProperty("password")
+        private val _password: String?,
+) {
+    val loginId: String
+        get() = _loginId!!
+    val password: String
+        get() = _password!!
+}

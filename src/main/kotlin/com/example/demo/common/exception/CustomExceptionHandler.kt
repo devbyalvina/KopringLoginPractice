@@ -4,6 +4,7 @@ import com.example.demo.common.dto.BaseResponse
 import com.example.demo.common.status.ResultCode
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -36,7 +37,14 @@ class CustomExceptionHandler {
         return ResponseEntity(BaseResponse(ResultCode.ERROR.name, errors, ResultCode.ERROR.msg), HttpStatus.BAD_REQUEST)
     }
 
-    // [Note 2.5] (3) 나머지 모든 예외 처리
+    // [Note 4.2] (3) 로그인 예외 처리
+    @ExceptionHandler(BadCredentialsException::class)
+    protected fun badCredentialsException(ex: BadCredentialsException): ResponseEntity<BaseResponse<Map<String, String>>> {
+        val errors = mapOf("로그인 실패" to "아이디 혹은 비밀번호를 다시 확인하세요.")
+        return ResponseEntity(BaseResponse(ResultCode.ERROR.name, errors, ResultCode.ERROR.msg), HttpStatus.BAD_REQUEST)
+    }
+
+    // [Note 2.5] (4) 나머지 모든 예외 처리
     @ExceptionHandler(Exception::class)
     protected fun defaultException(ex: Exception): ResponseEntity<BaseResponse<Map<String, String>>> {
         val errors = mapOf("미처리 에러" to (ex.message ?: "Not Exception Message"))
