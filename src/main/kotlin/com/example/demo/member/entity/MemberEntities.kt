@@ -1,8 +1,10 @@
 package com.example.demo.member.entity
 
 import com.example.demo.common.status.Gender
+import com.example.demo.common.status.ROLE
 import jakarta.persistence.*
 import java.time.LocalDate
+
 
 @Entity     // [Note 2.2] Member라는 Entity
 @Table(
@@ -33,4 +35,27 @@ class Member(
 
     @Column(nullable = false, length = 30)
     val email: String,
-)
+) {
+    // [Note 4.1] 멤버 엔티티에서 멤버 룰 조회 가능하도록 연결
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    val memberRole: List<MemberRole>? = null
+}
+
+// [Note 4.1] 권한(Role)을 가지고 있는 엔티티 추가 & 기존 멤버 엔티티에 연결
+@Entity
+class MemberRole(
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    var id: Long? = null,
+
+    // [Note 4.1] 권한(Role) 정보를 갖고 있음
+    @Column(nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
+    val role: ROLE,
+
+    // [Note 4.1] 멤버 엔티티에 다대일로 연결
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(foreignKey = ForeignKey(name = "fk_member_role_member_id"))
+    val member: Member,
+
+    )

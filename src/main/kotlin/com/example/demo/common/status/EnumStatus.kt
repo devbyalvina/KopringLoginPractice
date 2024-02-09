@@ -11,3 +11,8 @@ enum class ResultCode(val msg: String) {
     SUCCESS("정상 처리 되었습니다."),
     ERROR("에러가 발생했습니다.")
 }
+
+// [Note 4.1] 권한 상태 Enum Class
+enum class ROLE {
+    MEMBER  // 멤버라는 권한을 쓰기 위해 상수값 추가
+}
