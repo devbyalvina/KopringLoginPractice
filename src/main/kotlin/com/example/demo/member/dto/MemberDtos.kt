@@ -2,6 +2,7 @@ package com.example.demo.member.dto
 
 import com.example.demo.common.annotation.ValidEnum
 import com.example.demo.common.status.Gender
+import com.example.demo.member.entity.Member
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
@@ -91,4 +92,9 @@ data class MemberDtoRequest(
     private fun String.toLocalDate(): LocalDate =
             // this는 String을 의미함
             LocalDate.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+    // [Note 2.5] ExceptionHandler에서 BaseResponse의 결과 값을 담아서 전달할 수 있도록
+    // 'Member' DTO를 Request 클래스에 Entity로 변환해서 반환하는 function 추가
+    fun toEntity(): Member =
+            Member(id, loginId, password, name, birthDate, gender, email)
 }
