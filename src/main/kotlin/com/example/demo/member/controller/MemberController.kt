@@ -4,12 +4,10 @@ import com.example.demo.common.authority.TokenInfo
 import com.example.demo.common.dto.BaseResponse
 import com.example.demo.member.dto.LoginDto
 import com.example.demo.member.dto.MemberDtoRequest
+import com.example.demo.member.dto.MemberDtoResponse
 import com.example.demo.member.service.MemberService
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/api/member")
 @RestController
@@ -43,5 +41,15 @@ class MemberController(
         val tokenInfo = memberService.login(loginDto)
         // [Note 4.2] 토큰을 Response에 담아서 리턴
         return BaseResponse(data = tokenInfo)
+    }
+
+    /**
+     * 내 정보 보기
+     */
+    @GetMapping("/info/{id}")
+    fun searchMyInfo(@PathVariable id: Long): BaseResponse<MemberDtoResponse> {
+        // [Note 5.1] 내 정보를 조회할 id를 URL로 받도록 추가
+        val response = memberService.searchMyInfo(id)
+        return BaseResponse(data = response)
     }
 }

@@ -2,8 +2,10 @@ package com.example.demo.member.entity
 
 import com.example.demo.common.status.Gender
 import com.example.demo.common.status.ROLE
+import com.example.demo.member.dto.MemberDtoResponse
 import jakarta.persistence.*
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 @Entity     // [Note 2.2] Member라는 Entity
@@ -39,6 +41,13 @@ class Member(
     // [Note 4.1] 멤버 엔티티에서 멤버 룰 조회 가능하도록 연결
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     val memberRole: List<MemberRole>? = null
+
+    // [Note 5.1] 내 정보 조회 용 DTO 변경 함수(toDto) 추가
+    private fun LocalDate.formatDate(): String =
+            this.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+
+    fun toDto(): MemberDtoResponse =
+            MemberDtoResponse(id!!, loginId, name, birthDate.formatDate(), gender.desc, email)  // [Note 5.1] birthDate & gender는 String으로 변환
 }
 
 // [Note 4.1] 권한(Role)을 가지고 있는 엔티티 추가 & 기존 멤버 엔티티에 연결

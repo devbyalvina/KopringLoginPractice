@@ -26,7 +26,10 @@ class SecurityConfig(
             // [Note 3.3] authorizeHttpRequests 안에 권한 관리를 넣어주면 됨
             .authorizeHttpRequests {
                 // [Note 3.3] "/api/member/signup" URL을 호출하는 사람은 인증되지 않은 사용자여야하고
-                it.requestMatchers("/api/member/signup").anonymous()
+                // [Note 5.1] "/api/member/login"도 추가
+                it.requestMatchers("/api/member/signup", "/api/member/login").anonymous()
+                    // [Note 5.1] "/api/member/~"로 호출되는 모든 API는 MEMBER 권한이 있어야 함
+                    .requestMatchers("/api/member/**").hasRole("MEMBER")
                     // [Note 3.3] 그 외의 요청은 아무 권한 없이 모두가 접근이 가능
                     .anyRequest().permitAll()
             }

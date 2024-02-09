@@ -115,3 +115,15 @@ data class LoginDto(
     val password: String
         get() = _password!!
 }
+
+
+// [Note 5.1] 내 정보 조회 DTO
+// 조회시엔 기본적으로 값이 다 있을 거라서 Null 허용X & 다 string
+data class MemberDtoResponse(
+        val id: Long,
+        val loginId: String,
+        val name: String,
+        val birthDate: String,
+        val gender: String,
+        val email: String,
+)
