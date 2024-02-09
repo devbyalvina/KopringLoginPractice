@@ -33,6 +33,9 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// [Note 2.3-1] Validatiop 체크 Annotation Dependency
+	// Maven Repository에서 Spring Boot Starter Validation 검색해서 Gradle Kotlin꺼추가
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 }
 
 // [Note 2.1-2] JPA
