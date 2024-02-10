@@ -1,9 +1,9 @@
 package com.example.demo.common.service
 
+import com.example.demo.common.dto.CustomUser
 import com.example.demo.member.entity.Member
 import com.example.demo.member.repository.MemberRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -25,7 +25,9 @@ class CustomUserDetailsService(
 
 
     private fun createUserDetails(member: Member): UserDetails =
-            User(
+            // [Note 5.2] User -> CustomUser로 변경
+            CustomUser(
+                member.id!!,
                 member.loginId,
                 passwordEncoder.encode(member.password),
                 member.memberRole!!.map { SimpleGrantedAuthority("ROLE_${it.role}") }
